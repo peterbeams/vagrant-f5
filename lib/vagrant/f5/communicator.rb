@@ -16,7 +16,7 @@ require 'vagrant/util/platform'
 require 'vagrant/util/retryable'
 
 module VagrantPlugins
-  module CommunicatorF5
+  module F5
     # This class provides communication with the VM via SSH.
     class Communicator < Vagrant.plugin("2", :communicator)
       PTY_DELIM_START = "bccbb768c119429488cfd109aacea6b5-pty"
@@ -130,6 +130,10 @@ module VagrantPlugins
           @logger.info("SSH not up: #{e.inspect}")
           return false
         end
+
+        # wait for f5 shell to complete booting
+        @logger.info("Waiting for 60s for the F5 shell to complete booting...")
+        sleep 60
 
         # Verify the shell is valid
         if execute("", error_check: false) != 0

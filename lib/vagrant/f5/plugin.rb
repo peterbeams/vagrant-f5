@@ -2,7 +2,7 @@ require "vagrant"
 require_relative "communicator"
 
 module VagrantPlugins
-  module CommunicatorF5
+  module F5
     class Plugin < Vagrant.plugin("2")
       name "f5 communicator"
       description <<-DESC
@@ -13,6 +13,16 @@ module VagrantPlugins
 
       communicator("f5") do     
         Communicator
+      end
+
+      config(:f5, :provisioner) do
+        require File.expand_path("../config", __FILE__)
+        Config
+      end
+
+      provisioner(:f5) do
+        require File.expand_path("../provisioner", __FILE__)
+        Provisioner
       end
     end
   end
